@@ -107,6 +107,8 @@ public class KinectRB extends J4KSDK {
 
 		user_stat.setText("Joint = "
 				+ skel_process.getDistanceFromRightOfNeck());
+		
+		System.out.println("Detect");
 
 	}
 
