@@ -78,7 +78,7 @@ public class KinectRB extends J4KSDK {
 
 		viewer.map = map;
 	}
-
+	
 	@Override
 	public void onSkeletonFrameEvent(boolean[] skeleton_tracked,
 			float[] joint_position, float[] joint_orientation,
@@ -93,22 +93,31 @@ public class KinectRB extends J4KSDK {
 		for (int i = 0; i < getSkeletonCountLimit(); i++) {
 			viewer.skeletons[i] = Skeleton.getSkeleton(i, skeleton_tracked,
 					joint_position, joint_orientation, joint_status, this);
-			System.out.println("Skeleton "+ viewer.skeletons[i].isTracked());
-			if (viewer.skeletons[i].isTracked()) {
-				System.out.println("skel tracked");
-				skel_process.setRight_hand(viewer.skeletons[i]
-						.get3DJointX(Skeleton.HAND_RIGHT));
-				skel_process.setNeck(viewer.skeletons[i]
-						.get3DJointX(Skeleton.NECK));
-				//System.out.println("Right Hand : " + skel_process.getRight_hand());
-				System.out.println("Neck : " + skel_process.getNeck());
+			if (viewer.skeletons[i].isTracked()) {				
+				skel_process.setRight_handX(viewer.skeletons[i].get3DJointX(Skeleton.HAND_RIGHT));
+				skel_process.setLeft_handX(viewer.skeletons[i].get3DJointX(Skeleton.HAND_LEFT));
+				skel_process.setNeckX(viewer.skeletons[i].get3DJointX(Skeleton.NECK));
+				skel_process.setNeckY(viewer.skeletons[i].get3DJointY(Skeleton.NECK));
+				skel_process.setRight_handY(viewer.skeletons[i].get3DJointY(Skeleton.HAND_RIGHT));
+				skel_process.setLeft_handY(viewer.skeletons[i].get3DJointY(Skeleton.HAND_LEFT));
+				skel_process.setRight_elbowX(viewer.skeletons[i].get3DJointX(Skeleton.ELBOW_RIGHT));
+				skel_process.setLeft_elbowX(viewer.skeletons[i].get3DJointX(Skeleton.ELBOW_LEFT));
+				skel_process.setRight_elbowY(viewer.skeletons[i].get3DJointY(Skeleton.ELBOW_RIGHT));
+				skel_process.setLeft_elbowY(viewer.skeletons[i].get3DJointY(Skeleton.ELBOW_LEFT));
+				skel_process.setRight_shoulderX(viewer.skeletons[i].get3DJointX(Skeleton.SHOULDER_RIGHT));
+				skel_process.setLeft_shoulderX(viewer.skeletons[i].get3DJointX(Skeleton.SHOULDER_LEFT));
+				skel_process.setRight_shoulderY(viewer.skeletons[i].get3DJointY(Skeleton.SHOULDER_RIGHT));
+				skel_process.setLeft_shoulderY(viewer.skeletons[i].get3DJointY(Skeleton.SHOULDER_LEFT));
+				System.out.println("Right Hand X = " + skel_process.getRight_handX());
+				System.out.println("Left Hand X = " + skel_process.getLeft_handX());
+				System.out.println("Left Shoulder X = " + skel_process.getLeft_shoulderX());
+				System.out.println("The Movement is " + skel_process.translateToMovement());
 			}
 		}
-
+		
+		
 		user_stat.setText("Joint = "
 				+ skel_process.getDistanceFromRightOfNeck());
-		
-		System.out.println("Detect");
 
 	}
 

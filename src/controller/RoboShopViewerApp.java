@@ -67,7 +67,6 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		 * <br>
 		 * Do you want to exit now?</center>")) System.exit(0); }
 		 */
-
 		setLoadingProgress("Intitializing KinectRB...", 20);
 		myKinect = new KinectRB();
 
@@ -78,6 +77,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 					"<html><center><br>ERROR: The KinectRB device could not be initialized.<br><br>1. Check if the Microsoft's KinectRB SDK was succesfully installed on this computer.<br> 2. Check if the KinectRB is plugged into a power outlet.<br>3. Check if the KinectRB is connected to a USB port of this computer.</center>");
 			// System.exit(0);
 		}
+
 
 		setLoadingProgress("Intitializing OpenGL...", 60);
 		main_panel = new VideoPanelRB();		
