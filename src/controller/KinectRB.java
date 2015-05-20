@@ -1,7 +1,12 @@
 package controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import javax.swing.JLabel;
 
+import lejos.pc.comm.NXTConnector;
 import edu.ufl.digitalworlds.j4k.DepthMap;
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 import edu.ufl.digitalworlds.j4k.Skeleton;
@@ -45,9 +50,17 @@ public class KinectRB extends J4KSDK {
 	VideoPanelRB viewer = null;
 	JLabel user_stat = null;
 	SkeletonProcess skel_process = null;
+	NXTConnector conn = null;
+	OutputStream dos;
 
 	public KinectRB() {
 		skel_process = new SkeletonProcess();
+		conn = new NXTConnector();
+	}
+	
+	public void setNXTconnection (NXTConnector conn){
+		this.conn = conn;		
+		dos = conn.getOutputStream();
 	}
 
 	public void setViewer(VideoPanelRB viewer) {
@@ -112,6 +125,15 @@ public class KinectRB extends J4KSDK {
 				System.out.println("Left Hand X = " + skel_process.getLeft_handX());
 				System.out.println("Left Shoulder X = " + skel_process.getLeft_shoulderX());
 				System.out.println("The Movement is " + skel_process.translateToMovement());
+				
+				try {
+					dos.write(skel_process.translateToMovement());
+					dos.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+			
 			}
 		}
 		

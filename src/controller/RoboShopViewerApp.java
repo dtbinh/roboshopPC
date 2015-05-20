@@ -1,8 +1,13 @@
 package controller;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.io.OutputStream;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import lejos.pc.comm.NXTConnector;
 import edu.ufl.digitalworlds.gui.DWApp;
 
 /*
@@ -55,6 +61,8 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 	JTextArea console;
 	JSlider elevation_angle;
 	JLabel user_stat;
+	
+	JButton reconnect;
 
 	public void GUIsetup(JPanel p_root) {
 		/**
@@ -96,12 +104,16 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		areaScrollPane
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		JPanel setting_panel = new JPanel(new GridLayout(4, 1));
+		JPanel setting_panel = new JPanel(new FlowLayout());
+		reconnect = new JButton("Reconnect");
+		reconnect.addActionListener(new reconnectListener());
+		
 		user_stat = new JLabel("No User");
 		setting_panel.add(user_stat);
 		setting_panel.add(new JLabel("Camera Elevation"));
 		setting_panel.add(elevation_angle);
 		setting_panel.add(areaScrollPane);
+		setting_panel.add(reconnect);
 
 		myKinect.setViewer(main_panel);
 		myKinect.setUserStat(user_stat);
@@ -120,6 +132,33 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
 		setFrameSize(730, 570, null);
+	}
+	
+	//Start NXT connection
+	public void connect() {
+
+		NXTConnector conn = new NXTConnector();// create a new NXT connector
+		boolean connected = conn.connectTo("btspp://00165317B710"); //try to connect any NXT over bluetooth
+		//boolean connected = conn.connectTo("usb://");
+		if (!connected) {// failure
+			System.out.println("Failed");
+			console.append("Failed to connect to any NXT\n");
+			console.append("Press Reconect to retry.\n");
+		}
+
+		else// success!
+		{
+			System.out.println("Success");
+			myKinect.setNXTconnection(conn);
+			console.append("Connected to " + conn.getNXTInfo() + "\n");
+		}
+
+	}
+	
+	class reconnectListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt) {
+			connect();// call main connect method to try to connect again
+		}
 	}
 
 	public void stateChanged(ChangeEvent e) {

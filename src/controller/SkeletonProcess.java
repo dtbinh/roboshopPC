@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Vector;
+
 public class SkeletonProcess {
 
 	private float right_handX = 0;
@@ -16,6 +18,7 @@ public class SkeletonProcess {
 	private float left_shoulderY = 0;
 	private float neckX = 0;
 	private float neckY = 0;
+	Vector [] waveResult = new Vector[4];
 
 	public SkeletonProcess() {
 	}
@@ -145,10 +148,42 @@ public class SkeletonProcess {
 	public int getDistanceFromRightElbowY() {
 		return Math.round(right_handY) - Math.round(right_elbowY);
 	}
+	
+	public boolean partWaveLeft(){
+		if(right_handY >  right_elbowY){
+			if(right_handX < right_elbowX){
+				//wave hand to left
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean partWaveRight(){
+		if(right_handY >  right_elbowY){
+			if(right_handX > right_elbowX){
+				//wave hand to left
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean detectHandWave(){
+		
+		long start = System.currentTimeMillis();
+		
+		long end = System.currentTimeMillis();
+		
+		
+		return false;
+	}
 
 	public boolean moveForward() {
-		if ((right_handY > right_shoulderY) && (right_handX > right_shoulderX)) {
-			return true;
+		if (right_handX > right_shoulderX) {
+			if(right_handY > right_shoulderY){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -190,21 +225,23 @@ public class SkeletonProcess {
 		return false;
 	}
 
-	public String translateToMovement() {
-		String movement = "Stop";
+	public int translateToMovement() {
+		int movement = 0;
 
 		if (armUp()) {
-			movement = "Arm Up";
+			movement = 5;
 		} else if (armDown()) {
-			movement = "Arm Down";
+			movement = 6;
 		} else if (moveForward()) {
-			movement = "Forward";
+			movement = 1;
 		} else if (moveBackward()) {
-			movement = "Backward";
+			movement = 2;
 		} else if (moveRight()) {
-			movement = "Right";
+			movement = 3;
 		} else if (moveLeft()) {
-			movement = "Left";
+			movement = 4;
+		} else {
+			movement = 0;
 		}
 		return movement;
 	}
