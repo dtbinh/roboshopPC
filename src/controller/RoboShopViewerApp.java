@@ -1,12 +1,15 @@
 package controller;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
-import java.io.OutputStream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,8 +63,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 	VideoPanelRB main_panel;
 	JTextArea console;
 	JSlider elevation_angle;
-	JLabel user_stat;
-	
+
 	JButton reconnect;
 
 	public void GUIsetup(JPanel p_root) {
@@ -78,6 +80,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		setLoadingProgress("Intitializing KinectRB...", 20);
 		myKinect = new KinectRB();
 
+
 		if (!myKinect.start(KinectRB.DEPTH | KinectRB.COLOR | KinectRB.SKELETON
 				| KinectRB.XYZ | KinectRB.PLAYER_INDEX)) {
 			DWApp.showErrorDialog(
@@ -86,41 +89,110 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 			// System.exit(0);
 		}
 
-
 		setLoadingProgress("Intitializing OpenGL...", 60);
-		main_panel = new VideoPanelRB();		
+
+		
+		// GUI Elements Top
+		JPanel headerLayout = new JPanel(new FlowLayout());
+		JLabel icon_head = new JLabel();
+		icon_head.setAlignmentX(Component.CENTER_ALIGNMENT);
+		headerLayout.add(icon_head);
+		//-- END
+		
+		//GUI Elements Middle
+		main_panel = new VideoPanelRB();
+		//-- END
+		
+		//GUI Element Bottom
+		Container pane = new Container();
+		pane.setLayout(new GridBagLayout());
 		
 		console = new JTextArea();
-
+		console.setWrapStyleWord(true);
+		console.setLineWrap(true);
+		JScrollPane consoleScroll = new JScrollPane(console);
+		consoleScroll.setViewportView(console);
+		consoleScroll.setWheelScrollingEnabled(true);
+		
+		JPanel iconLayout = new JPanel(new FlowLayout());
+		JButton icon_nxt = new JButton();
+		icon_nxt.addActionListener(new reconnectListener());
+		JLabel icon_user = new JLabel();		
+		iconLayout.add(icon_nxt);
+		iconLayout.add(icon_user);
+		
+		JLabel elevation_label = new JLabel("Camera Elevation : ");
 		elevation_angle = new JSlider();
+		elevation_angle.setSize(getPreferredSize());
 		elevation_angle.setMinimum(-27);
 		elevation_angle.setMaximum(27);
 		elevation_angle.setValue((int) myKinect.getElevationAngle());
 		elevation_angle.setToolTipText("Elevation Angle ("
 				+ elevation_angle.getValue() + " degrees)");
 		elevation_angle.addChangeListener(this);
-
-		JScrollPane areaScrollPane = new JScrollPane(console);
-		areaScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		JPanel setting_panel = new JPanel(new FlowLayout());
-		reconnect = new JButton("Reconnect");
-		reconnect.addActionListener(new reconnectListener());
+		//-- END		
 		
-		user_stat = new JLabel("No User");
-		setting_panel.add(user_stat);
-		setting_panel.add(new JLabel("Camera Elevation"));
-		setting_panel.add(elevation_angle);
-		setting_panel.add(areaScrollPane);
-		setting_panel.add(reconnect);
-
+		//Assign image to icon		
+		ImageIcon nxt = createImageIcon("images/nxt_connect.png",
+				"Reconnect NXT");
+		ImageIcon icon = createImageIcon("images/icon_no_user.png",
+				"No User Detected!");
+		ImageIcon header = createImageIcon("images/icon-robot-shop.png",
+				"User Detected!");
+		icon_nxt.setIcon(nxt);
+		icon_head.setIcon(header);
+		icon_user.setIcon(icon);
+		//-- END
+		
+		//Assign GUI Element to Layout
+		GridBagConstraints c = new GridBagConstraints();		
+		
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.LINE_START;
+		c.weightx = 0.25;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		pane.add(iconLayout, c);
+		
+		c.fill = GridBagConstraints.BOTH;
+		c.gridwidth = 2;
+		c.weightx = 0.5;
+		c.gridx = 1;
+		c.gridy = 0;
+		pane.add(consoleScroll, c);
+		
+		c.gridx = 0;
+		c.gridy = 1;
+		pane.add(elevation_label, c);
+		
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		pane.add(elevation_angle, c);
+		
+		//Assign Kinect elements and rules
 		myKinect.setViewer(main_panel);
-		myKinect.setUserStat(user_stat);
+		myKinect.setUserStat(icon_user);
 		myKinect.setSeatedSkeletonTracking(true);
 		myKinect.computeUV(true);
+		//-- END
+		
+		//Assign all layout to main frame
+		p_root.add(headerLayout, BorderLayout.NORTH);
 		p_root.add(main_panel, BorderLayout.CENTER);
-		p_root.add(setting_panel, BorderLayout.SOUTH);
+		p_root.add(pane, BorderLayout.SOUTH);
+		//-- END	
+	}
+
+	private ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 
 	public void GUIclosing() {
@@ -131,17 +203,20 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
-		setFrameSize(730, 570, null);
+		setFrameSize(730, 870, null);
 	}
-	
-	//Start NXT connection
+
+	// Start NXT connection
 	public void connect() {
 
 		NXTConnector conn = new NXTConnector();// create a new NXT connector
-		boolean connected = conn.connectTo("btspp://00165317B710"); //try to connect any NXT over bluetooth
-		//boolean connected = conn.connectTo("usb://");
+		boolean connected = conn.connectTo("btspp://00165317B710"); // try to
+																	// connect
+																	// any NXT
+																	// over
+																	// bluetooth
+		// boolean connected = conn.connectTo("usb://");
 		if (!connected) {// failure
-			System.out.println("Failed");
 			console.append("Failed to connect to any NXT\n");
 			console.append("Press Reconect to retry.\n");
 		}
@@ -154,7 +229,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		}
 
 	}
-	
+
 	class reconnectListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 			connect();// call main connect method to try to connect again
@@ -167,8 +242,8 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 				myKinect.setElevationAngle(elevation_angle.getValue());
 				elevation_angle.setToolTipText("Elevation Angle ("
 						+ elevation_angle.getValue() + " degrees)");
-				console.append("\nKinect elevation changed : "
-						+ myKinect.getElevationAngle());
+				console.append("Kinect elevation changed : "
+						+ myKinect.getElevationAngle() + "\n");
 			}
 		}
 	}

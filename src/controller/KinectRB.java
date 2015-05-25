@@ -1,9 +1,8 @@
 package controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import lejos.pc.comm.NXTConnector;
@@ -48,18 +47,21 @@ import edu.ufl.digitalworlds.j4k.Skeleton;
 public class KinectRB extends J4KSDK {
 
 	VideoPanelRB viewer = null;
-	JLabel user_stat = null;
+	JLabel user_icon = null;
 	SkeletonProcess skel_process = null;
 	NXTConnector conn = null;
 	OutputStream dos;
+	boolean userReady;
+	int userIDTracked;
+	int frameCount = 0;
 
 	public KinectRB() {
 		skel_process = new SkeletonProcess();
 		conn = new NXTConnector();
 	}
-	
-	public void setNXTconnection (NXTConnector conn){
-		this.conn = conn;		
+
+	public void setNXTconnection(NXTConnector conn) {
+		this.conn = conn;
 		dos = conn.getOutputStream();
 	}
 
@@ -71,16 +73,34 @@ public class KinectRB extends J4KSDK {
 		return viewer;
 	}
 
-	public void setUserStat(JLabel user_stat) {
-		this.user_stat = user_stat;
+	public void setUserStat(JLabel user_icon) {
+		this.user_icon = user_icon;
+	}
+
+	private ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 
 	@Override
 	public void onDepthFrameEvent(short[] depth_frame, byte[] body_index,
 			float[] xyz, float[] uv) {
 
-		if (viewer == null)
+		if (viewer == null) {
 			return;
+		}		
+
+		if (viewer.skeletons[userIDTracked] != null) {
+			if (viewer.skeletons[userIDTracked].isJointTrackedOrInferred(Skeleton.NECK)) {
+				System.out.println("Masuk On Depth");
+				userReady = false;
+			}
+		}
 
 		DepthMap map = new DepthMap(getDepthWidth(), getDepthHeight(), xyz);
 
@@ -91,55 +111,42 @@ public class KinectRB extends J4KSDK {
 
 		viewer.map = map;
 	}
-	
+
 	@Override
 	public void onSkeletonFrameEvent(boolean[] skeleton_tracked,
 			float[] joint_position, float[] joint_orientation,
 			byte[] joint_status) {
 
 		if (viewer == null || viewer.skeletons == null) {
+			userReady = false;
 			return;
 		}
-
-		System.out.println("User Detected...");
 
 		for (int i = 0; i < getSkeletonCountLimit(); i++) {
 			viewer.skeletons[i] = Skeleton.getSkeleton(i, skeleton_tracked,
 					joint_position, joint_orientation, joint_status, this);
-			if (viewer.skeletons[i].isTracked()) {				
-				skel_process.setRight_handX(viewer.skeletons[i].get3DJointX(Skeleton.HAND_RIGHT));
-				skel_process.setLeft_handX(viewer.skeletons[i].get3DJointX(Skeleton.HAND_LEFT));
-				skel_process.setNeckX(viewer.skeletons[i].get3DJointX(Skeleton.NECK));
-				skel_process.setNeckY(viewer.skeletons[i].get3DJointY(Skeleton.NECK));
-				skel_process.setRight_handY(viewer.skeletons[i].get3DJointY(Skeleton.HAND_RIGHT));
-				skel_process.setLeft_handY(viewer.skeletons[i].get3DJointY(Skeleton.HAND_LEFT));
-				skel_process.setRight_elbowX(viewer.skeletons[i].get3DJointX(Skeleton.ELBOW_RIGHT));
-				skel_process.setLeft_elbowX(viewer.skeletons[i].get3DJointX(Skeleton.ELBOW_LEFT));
-				skel_process.setRight_elbowY(viewer.skeletons[i].get3DJointY(Skeleton.ELBOW_RIGHT));
-				skel_process.setLeft_elbowY(viewer.skeletons[i].get3DJointY(Skeleton.ELBOW_LEFT));
-				skel_process.setRight_shoulderX(viewer.skeletons[i].get3DJointX(Skeleton.SHOULDER_RIGHT));
-				skel_process.setLeft_shoulderX(viewer.skeletons[i].get3DJointX(Skeleton.SHOULDER_LEFT));
-				skel_process.setRight_shoulderY(viewer.skeletons[i].get3DJointY(Skeleton.SHOULDER_RIGHT));
-				skel_process.setLeft_shoulderY(viewer.skeletons[i].get3DJointY(Skeleton.SHOULDER_LEFT));
-				System.out.println("Right Hand X = " + skel_process.getRight_handX());
-				System.out.println("Left Hand X = " + skel_process.getLeft_handX());
-				System.out.println("Left Shoulder X = " + skel_process.getLeft_shoulderX());
-				System.out.println("The Movement is " + skel_process.translateToMovement());
-				
-				try {
-					dos.write(skel_process.translateToMovement());
-					dos.flush();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
-			
+			if (viewer.skeletons[i].isTracked()) {
+				userIDTracked = viewer.skeletons[i].getPlayerID();
 			}
 		}
-		
-		
-		user_stat.setText("Joint = "
-				+ skel_process.getDistanceFromRightOfNeck());
+
+		skel_process.setSkeleton(viewer.skeletons[userIDTracked]);
+
+		if (userReady) {
+			ImageIcon icon = createImageIcon("images/icon_yes_user.png",
+					"No User Detected!");
+			user_icon.setIcon(icon);
+			System.out.println("Movement ID : " + skel_process.getToMovement());
+			/**
+			 * try { dos.write(skel_process.translateToMovement()); dos.flush();
+			 * } catch (IOException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 */
+		} else {
+			// wait for wave
+			userReady = skel_process.getWaveCompleted();
+			System.out.println("User Not Ready");
+		}
 
 	}
 
