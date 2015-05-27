@@ -93,13 +93,6 @@ public class KinectRB extends J4KSDK {
 
 		if (viewer == null) {
 			return;
-		}		
-
-		if (viewer.skeletons[userIDTracked] != null) {
-			if (viewer.skeletons[userIDTracked].isJointTrackedOrInferred(Skeleton.NECK)) {
-				System.out.println("Masuk On Depth");
-				userReady = false;
-			}
 		}
 
 		DepthMap map = new DepthMap(getDepthWidth(), getDepthHeight(), xyz);
@@ -136,7 +129,7 @@ public class KinectRB extends J4KSDK {
 			ImageIcon icon = createImageIcon("images/icon_yes_user.png",
 					"No User Detected!");
 			user_icon.setIcon(icon);
-			System.out.println("Movement ID : " + skel_process.getToMovement());
+			//System.out.println("Movement ID : " + skel_process.getToMovement());
 			/**
 			 * try { dos.write(skel_process.translateToMovement()); dos.flush();
 			 * } catch (IOException e) { // TODO Auto-generated catch block

@@ -198,13 +198,19 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 	public void GUIclosing() {
 		myKinect.stop();
 	}
-
+	
+	public static void startKinect(){
+		createMainFrame("RoboShop Viewer And Controller");
+		app = new RoboShopViewerApp();
+		setFrameSize(730, 870, null);
+	}
+/**
 	public static void main(String args[]) {
 
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
 		setFrameSize(730, 870, null);
-	}
+	} */
 
 	// Start NXT connection
 	public void connect() {
