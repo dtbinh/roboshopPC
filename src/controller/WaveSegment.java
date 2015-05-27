@@ -4,8 +4,6 @@ import edu.ufl.digitalworlds.j4k.Skeleton;
 
 public class WaveSegment {
 	
-	
-	
 	public WaveSegment(){
 		
 	}

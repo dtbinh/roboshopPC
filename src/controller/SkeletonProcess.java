@@ -27,13 +27,12 @@ public class SkeletonProcess {
 	private float neckX = 0;
 	private float neckY = 0;
 
-	int countFrame = 0;
 	int curSegment = 0;
-	boolean[] waveResult = new boolean[4];
+	boolean[] waveResult = {false,false,false,false};;
 	WaveSegment ws;
 
 	public SkeletonProcess() {
-		ws = new WaveSegment();
+		ws = new WaveSegment();		
 	}
 
 	public void setSkeleton(Skeleton skeleton) {
@@ -228,8 +227,6 @@ public class SkeletonProcess {
 			curSegment++;
 		}
 
-		System.out.println("Frame Count : " + countFrame);
-		countFrame++;
 		for (int i = 0; i < waveResult.length; i++) {
 			if (!waveResult[i]) {
 				return false;

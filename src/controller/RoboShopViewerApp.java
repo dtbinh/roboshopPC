@@ -18,6 +18,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 import lejos.pc.comm.NXTConnector;
 import edu.ufl.digitalworlds.gui.DWApp;
@@ -110,9 +111,12 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		console = new JTextArea();
 		console.setWrapStyleWord(true);
 		console.setLineWrap(true);
+		DefaultCaret caret = (DefaultCaret)console.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		JScrollPane consoleScroll = new JScrollPane(console);
 		consoleScroll.setViewportView(console);
 		consoleScroll.setWheelScrollingEnabled(true);
+		consoleScroll.setFocusCycleRoot(true);
 		
 		JPanel iconLayout = new JPanel(new FlowLayout());
 		JButton icon_nxt = new JButton();
@@ -174,6 +178,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		//Assign Kinect elements and rules
 		myKinect.setViewer(main_panel);
 		myKinect.setUserStat(icon_user);
+		myKinect.setConsole(console);
 		myKinect.setSeatedSkeletonTracking(true);
 		myKinect.computeUV(true);
 		//-- END
@@ -204,13 +209,13 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		app = new RoboShopViewerApp();
 		setFrameSize(730, 870, null);
 	}
-/**
+
 	public static void main(String args[]) {
 
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
 		setFrameSize(730, 870, null);
-	} */
+	}
 
 	// Start NXT connection
 	public void connect() {

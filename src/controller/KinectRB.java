@@ -4,6 +4,7 @@ import java.io.OutputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 import lejos.pc.comm.NXTConnector;
 import edu.ufl.digitalworlds.j4k.DepthMap;
@@ -54,6 +55,8 @@ public class KinectRB extends J4KSDK {
 	boolean userReady;
 	int userIDTracked;
 	int frameCount = 0;
+	JTextArea console;
+	int curMovement = 0;
 
 	public KinectRB() {
 		skel_process = new SkeletonProcess();
@@ -71,6 +74,10 @@ public class KinectRB extends J4KSDK {
 
 	public VideoPanelRB getViewer() {
 		return viewer;
+	}
+
+	public void setConsole(JTextArea console) {
+		this.console = console;
 	}
 
 	public void setUserStat(JLabel user_icon) {
@@ -129,7 +136,13 @@ public class KinectRB extends J4KSDK {
 			ImageIcon icon = createImageIcon("images/icon_yes_user.png",
 					"No User Detected!");
 			user_icon.setIcon(icon);
-			//System.out.println("Movement ID : " + skel_process.getToMovement());
+			if (curMovement == skel_process.getToMovement()) {
+
+			} else {
+				curMovement = skel_process.getToMovement();
+				console.append("Movement ID : " + curMovement + "\n");
+			}
+
 			/**
 			 * try { dos.write(skel_process.translateToMovement()); dos.flush();
 			 * } catch (IOException e) { // TODO Auto-generated catch block
