@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.swing.ImageIcon;
@@ -134,7 +135,7 @@ public class KinectRB extends J4KSDK {
 
 		if (userReady) {
 			ImageIcon icon = createImageIcon("images/icon_yes_user.png",
-					"No User Detected!");
+					"User Detected!");
 			user_icon.setIcon(icon);
 			if (curMovement == skel_process.getToMovement()) {
 
@@ -143,11 +144,15 @@ public class KinectRB extends J4KSDK {
 				console.append("Movement ID : " + curMovement + "\n");
 			}
 
-			/**
-			 * try { dos.write(skel_process.translateToMovement()); dos.flush();
-			 * } catch (IOException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); }
-			 */
+			System.out.println("Right Hand Trans : ");
+
+			try {
+				dos.write(skel_process.getToMovement());
+				dos.flush();
+			} catch (IOException e) { // TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		} else {
 			// wait for wave
 			userReady = skel_process.getWaveCompleted();

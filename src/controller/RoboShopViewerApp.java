@@ -214,7 +214,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
-		setFrameSize(730, 870, null);
+		setFrameSize(730, 800, null);
 	}
 
 	// Start NXT connection
