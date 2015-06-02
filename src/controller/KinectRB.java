@@ -142,23 +142,19 @@ public class KinectRB extends J4KSDK {
 			} else {
 				curMovement = skel_process.getToMovement();
 				console.append("Movement ID : " + curMovement + "\n");
+				try {
+					dos.write(skel_process.getToMovement());
+					dos.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-
-			System.out.println("Right Hand Trans : ");
-
-			try {
-				dos.write(skel_process.getToMovement());
-				dos.flush();
-			} catch (IOException e) { // TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		} else {
 			// wait for wave
 			userReady = skel_process.getWaveCompleted();
 			System.out.println("User Not Ready");
 		}
-
 	}
 
 	@Override

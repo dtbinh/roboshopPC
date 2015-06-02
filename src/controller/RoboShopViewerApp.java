@@ -60,9 +60,9 @@ import edu.ufl.digitalworlds.gui.DWApp;
 @SuppressWarnings("serial")
 public class RoboShopViewerApp extends DWApp implements ChangeListener {
 
-	KinectRB myKinect;
+	static KinectRB myKinect;
 	VideoPanelRB main_panel;
-	JTextArea console;
+	static JTextArea console;
 	JSlider elevation_angle;
 
 	JButton reconnect;
@@ -204,10 +204,15 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		myKinect.stop();
 	}
 	
-	public static void startKinect(){
+	public static boolean startKinect(NXTConnector NXTCon) {
 		createMainFrame("RoboShop Viewer And Controller");
 		app = new RoboShopViewerApp();
-		setFrameSize(730, 870, null);
+		setFrameSize(1366, 720, null);
+		System.out.println("Connected to " + NXTCon.getNXTInfo() + "\n");
+		myKinect.setNXTconnection(NXTCon);
+		console.append("Connected to " + NXTCon.getNXTInfo() + "\n");		
+		
+		return NXTCon != null;
 	}
 
 	public static void main(String args[]) {

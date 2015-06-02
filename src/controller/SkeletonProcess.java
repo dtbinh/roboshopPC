@@ -227,16 +227,17 @@ public class SkeletonProcess {
 			curSegment++;
 		}
 
-		for (int i = 0; i < waveResult.length; i++) {
+		for (int i = 0;  i < waveResult.length; i++) {
 			if (!waveResult[i]) {
 				return false;
 			}
 		}
+		
 		return true;
 	}
 
 	public boolean moveForward() {
-		if (right_handZ < right_shoulderZ+2) {
+		if (right_handZ < right_shoulderZ+3) {
 			if (right_handY > (right_shoulderY + 1)){
 				/** && (right_handY < (right_shoulderY + 2)))  */
 				return true;
@@ -246,9 +247,9 @@ public class SkeletonProcess {
 	}
 
 	public boolean moveBackward() {
-		if (right_handZ < right_shoulderZ+2) {
+		if (right_handZ < right_shoulderZ+3) {
 			if ((right_handY < (right_shoulderY - 1))
-					&& (right_handY > (right_shoulderY - 2))) {
+					&& (right_handY > (right_shoulderY - 3))) {
 				return true;
 			}
 		}
