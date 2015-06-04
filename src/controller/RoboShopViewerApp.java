@@ -226,7 +226,7 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 	public void connect() {
 
 		NXTConnector conn = new NXTConnector();// create a new NXT connector
-		boolean connected = conn.connectTo("btspp://00165317B710"); // try to
+		boolean connected = conn.connectTo("btspp://"); // try to
 																	// connect
 																	// any NXT
 																	// over

@@ -15,27 +15,42 @@ public class MoveSegment {
 
 		if (moveForward()) {
 			id = 1;
+		} else if (moveBackward()) {
+			id = 2;
+		} else if (rotateRight()) {
+			id = 3;
 		}
 
 		return id;
 	}
 
 	public boolean moveForward() {
-		if (((skeleton.get3DJointY(Skeleton.HAND_RIGHT) - skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT)) > 1)
-				&& ((skeleton.get3DJointY(Skeleton.HAND_RIGHT) - skeleton
-						.get3DJointY(Skeleton.SHOULDER_RIGHT)) < 3)) {
+		if ((skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 1
+				&& (skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
+						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 3) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean moveBackward() {
-		if (skeleton.get3DJointY(Skeleton.HAND_RIGHT) > skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT)) {
+		if ((skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < -1
+				&& (skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
+						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > -3) {
 			return true;
 		}
 		return false;
 	}
 
+	public boolean rotateRight() {
+		if ((skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 2
+				&& (skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
+						.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10) < 3) {
+			return true;
+		}
+		return false;
+	}
 }

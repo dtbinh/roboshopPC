@@ -132,7 +132,8 @@ public class KinectRB extends J4KSDK {
 		}
 
 		skel_process.setSkeleton(viewer.skeletons[userIDTracked]);
-
+		//System.out.println("Right Hand : " + skel_process.getSkeleton().get3DJointY(Skeleton.HAND_RIGHT));
+		//System.out.println("Right Shoulder : " + skel_process.getSkeleton().get3DJointY(Skeleton.SHOULDER_RIGHT));
 		if (userReady) {
 			ImageIcon icon = createImageIcon("images/icon_yes_user.png",
 					"User Detected!");

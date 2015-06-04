@@ -32,6 +32,7 @@ public class SkeletonProcess {
 	boolean rightHandUp = false;
 	boolean[] moveResult = { false, false, false, false };
 	WaveSegment ws;
+	MoveSegment ms;
 
 	public SkeletonProcess() {
 		ws = new WaveSegment();
@@ -39,6 +40,7 @@ public class SkeletonProcess {
 
 	public void setSkeleton(Skeleton skeleton) {
 		this.skeleton = skeleton;
+		ms = new MoveSegment(skeleton);
 		setHandyName();
 	}
 
@@ -238,20 +240,7 @@ public class SkeletonProcess {
 	}
 
 	public int getMoveCompleted() {
-		if ((right_shoulderZ - right_handZ) > 4) {
-			rightHandUp = true;
-		} else {
-			rightHandUp = false;
-		}
-		
-		if(rightHandUp){
-			
-		}
-		else{
-			return 0;
-		}
-
-		return 0;
+		return ms.getMoveId();
 	}
 
 	public boolean moveForward() {
@@ -311,22 +300,18 @@ public class SkeletonProcess {
 	public int getToMovement() {
 		int movement = 0;
 
-		if (moveForward()) {
-			System.out.println("Move Forward");
-			movement = 1;
-		} else if (moveBackward()) {
-			System.out.println("Move Backward");
-			movement = 2;
-		} else if (rotateRight()) {
-			System.out.println("Rotate Right");
-			movement = 3;
-		} else if (rotateLeft()) {
-			System.out.println("Rotate Left");
-			movement = 4;
-		} else {
-			System.out.println("Stop");
+		if ((right_shoulderZ - right_handZ) > 4) {
+			movement = getMoveCompleted();
 		}
+
 		/**
+		 * if (moveForward()) { System.out.println("Move Forward"); movement =
+		 * 1; } else if (moveBackward()) { System.out.println("Move Backward");
+		 * movement = 2; } else if (rotateRight()) {
+		 * System.out.println("Rotate Right"); movement = 3; } else if
+		 * (rotateLeft()) { System.out.println("Rotate Left"); movement = 4; }
+		 * else { System.out.println("Stop"); }
+		 * 
 		 * if (armUp()) { movement = 5; } else if (armDown()) { movement = 6; }
 		 * else if (moveForward()) { System.out.println("Move Forward");
 		 * movement = 1; } else if (moveBackward()) {
