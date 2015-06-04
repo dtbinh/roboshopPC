@@ -27,12 +27,14 @@ public class SkeletonProcess {
 	private float neckX = 0;
 	private float neckY = 0;
 
-	int curSegment = 0;
-	boolean[] waveResult = {false,false,false,false};;
+	int waveCurSegment = 0;
+	boolean[] waveResult = { false, false, false, false };
+	boolean rightHandUp = false;
+	boolean[] moveResult = { false, false, false, false };
 	WaveSegment ws;
 
 	public SkeletonProcess() {
-		ws = new WaveSegment();		
+		ws = new WaveSegment();
 	}
 
 	public void setSkeleton(Skeleton skeleton) {
@@ -214,7 +216,7 @@ public class SkeletonProcess {
 		// not complete
 		boolean partWaveResult = false;
 
-		if (curSegment % 2 > 0) {
+		if (waveCurSegment % 2 > 0) {
 			partWaveResult = ws.wavePartRight(skeleton);
 			System.out.println("Wave Right : " + partWaveResult);
 		} else {
@@ -223,23 +225,39 @@ public class SkeletonProcess {
 		}
 
 		if (partWaveResult) {
-			waveResult[curSegment] = true;
-			curSegment++;
+			waveResult[waveCurSegment] = true;
+			waveCurSegment++;
 		}
 
-		for (int i = 0;  i < waveResult.length; i++) {
+		for (int i = 0; i < waveResult.length; i++) {
 			if (!waveResult[i]) {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 
+	public int getMoveCompleted() {
+		if ((right_shoulderZ - right_handZ) > 4) {
+			rightHandUp = true;
+		} else {
+			rightHandUp = false;
+		}
+		
+		if(rightHandUp){
+			
+		}
+		else{
+			return 0;
+		}
+
+		return 0;
+	}
+
 	public boolean moveForward() {
-		if (right_handZ < right_shoulderZ+3) {
-			if (right_handY > (right_shoulderY + 1)){
-				/** && (right_handY < (right_shoulderY + 2)))  */
+		if (right_handZ < right_shoulderZ + 3) {
+			if (right_handY > (right_shoulderY + 1)) {
+				/** && (right_handY < (right_shoulderY + 2))) */
 				return true;
 			}
 		}
@@ -247,7 +265,7 @@ public class SkeletonProcess {
 	}
 
 	public boolean moveBackward() {
-		if (right_handZ < right_shoulderZ+3) {
+		if (right_handZ < right_shoulderZ + 3) {
 			if ((right_handY < (right_shoulderY - 1))
 					&& (right_handY > (right_shoulderY - 3))) {
 				return true;
@@ -257,8 +275,8 @@ public class SkeletonProcess {
 	}
 
 	public boolean rotateRight() {
-		if (right_handZ < right_shoulderZ+2) {
-			if (right_handX > (right_shoulderX + 1)){
+		if (right_handZ < right_shoulderZ + 2) {
+			if (right_handX > (right_shoulderX + 1)) {
 				return true;
 			}
 		}
@@ -266,8 +284,8 @@ public class SkeletonProcess {
 	}
 
 	public boolean rotateLeft() {
-		if (right_handZ < right_shoulderZ+2) {
-			if (right_handX < (right_shoulderX - 1)){
+		if (right_handZ < right_shoulderZ + 2) {
+			if (right_handX < (right_shoulderX - 1)) {
 				return true;
 			}
 		}
@@ -299,10 +317,10 @@ public class SkeletonProcess {
 		} else if (moveBackward()) {
 			System.out.println("Move Backward");
 			movement = 2;
-		} else if (rotateRight()){
+		} else if (rotateRight()) {
 			System.out.println("Rotate Right");
 			movement = 3;
-		} else if (rotateLeft()){
+		} else if (rotateLeft()) {
 			System.out.println("Rotate Left");
 			movement = 4;
 		} else {
