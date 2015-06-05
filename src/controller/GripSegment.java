@@ -2,11 +2,11 @@ package controller;
 
 import edu.ufl.digitalworlds.j4k.Skeleton;
 
-public class ArmSegment {
+public class GripSegment {
 
 	Skeleton skeleton;
 
-	public ArmSegment(Skeleton skeleton) {
+	public GripSegment(Skeleton skeleton) {
 		this.skeleton = skeleton;
 	}
 

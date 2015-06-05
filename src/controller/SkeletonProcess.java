@@ -33,6 +33,8 @@ public class SkeletonProcess {
 	boolean[] moveResult = { false, false, false, false };
 	WaveSegment ws;
 	MoveSegment ms;
+	ArmSegment as;
+	GripSegment gs;
 
 	public SkeletonProcess() {
 		ws = new WaveSegment();
@@ -41,6 +43,8 @@ public class SkeletonProcess {
 	public void setSkeleton(Skeleton skeleton) {
 		this.skeleton = skeleton;
 		ms = new MoveSegment(skeleton);
+		as = new ArmSegment(skeleton);
+		gs = new GripSegment(skeleton);
 		setHandyName();
 	}
 
@@ -242,83 +246,26 @@ public class SkeletonProcess {
 	public int getMoveCompleted() {
 		return ms.getMoveId();
 	}
-
-	public boolean moveForward() {
-		if (right_handZ < right_shoulderZ + 3) {
-			if (right_handY > (right_shoulderY + 1)) {
-				/** && (right_handY < (right_shoulderY + 2))) */
-				return true;
-			}
-		}
-		return false;
+	
+	public int getArmCompleted() {
+		return as.getMoveId();
 	}
-
-	public boolean moveBackward() {
-		if (right_handZ < right_shoulderZ + 3) {
-			if ((right_handY < (right_shoulderY - 1))
-					&& (right_handY > (right_shoulderY - 3))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean rotateRight() {
-		if (right_handZ < right_shoulderZ + 2) {
-			if (right_handX > (right_shoulderX + 1)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean rotateLeft() {
-		if (right_handZ < right_shoulderZ + 2) {
-			if (right_handX < (right_shoulderX - 1)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean armUp() {
-		if (((right_handX < right_shoulderX) && (left_handX > left_shoulderX))
-				&& ((right_handY > right_shoulderY) && (left_handY > left_shoulderY))) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean armDown() {
-		if ((right_handX < right_shoulderX) && (left_handX > left_shoulderX)
-				&& ((right_handY < right_elbowY) && (left_handY < left_elbowY))) {
-			return true;
-		}
-		return false;
+	
+	public int getGripCompleted(){
+		return gs.getMoveId();
 	}
 
 	public int getToMovement() {
 		int movement = 0;
+		
+		
 
 		if ((right_shoulderZ - right_handZ) > 4) {
 			movement = getMoveCompleted();
+		} else if((left_shoulderZ - left_handZ) > 4){
+			movement = getArmCompleted();
 		}
 
-		/**
-		 * if (moveForward()) { System.out.println("Move Forward"); movement =
-		 * 1; } else if (moveBackward()) { System.out.println("Move Backward");
-		 * movement = 2; } else if (rotateRight()) {
-		 * System.out.println("Rotate Right"); movement = 3; } else if
-		 * (rotateLeft()) { System.out.println("Rotate Left"); movement = 4; }
-		 * else { System.out.println("Stop"); }
-		 * 
-		 * if (armUp()) { movement = 5; } else if (armDown()) { movement = 6; }
-		 * else if (moveForward()) { System.out.println("Move Forward");
-		 * movement = 1; } else if (moveBackward()) {
-		 * System.out.println("Move Backward"); movement = 2; } else if
-		 * (moveRight()) { movement = 3; } else if (moveLeft()) { movement = 4;
-		 * } else { movement = 0; }
-		 */
 		return movement;
 	}
 
