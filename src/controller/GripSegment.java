@@ -12,55 +12,57 @@ public class GripSegment {
 
 	public int getMoveId() {
 		int id = 0;
-
-		if (armUp()) {
-			id = 5;
-		} else if (armDown()) {
-			id = 6;
-		} else if (armRight()) {
-			id = 7;
-		} else if (armLeft()) {
-			id = 8;
+		if (open()) {
+			id = 9;
+		} else if (close()) {
+			id = 10;
 		}
-
 		return id;
 	}
 
-	public boolean armUp() {
-		if ((skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 1
-				&& (skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < 3) {
+	public boolean open() {
+		return openRight() && openLeft();
+	}
+
+	public boolean openRight() {
+		if ((skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10
+				- skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10 > 1)
+				&& skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10
+						- skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10 < 3) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean armDown() {
-		if ((skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < -1
-				&& (skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -3) {
+	public boolean openLeft() {
+		if ((skeleton.get3DJointX(Skeleton.SHOULDER_LEFT) * 10
+				- skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 > 1)
+				&& skeleton.get3DJointX(Skeleton.SHOULDER_LEFT) * 10
+						- skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 < 3) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean armRight() {
-		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 2
-				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < 3) {
+	public boolean close() {
+		return closeRight() && closeLeft();
+	}
+
+	public boolean closeRight() {
+		if ((skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10
+				- skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 > 1)
+				&& (skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10
+						- skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 < 3)) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean armLeft() {
-		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < -2
-				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) > -3) {
+	public boolean closeLeft() {
+		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10
+				- skeleton.get3DJointX(Skeleton.SHOULDER_LEFT) * 10 > 0)
+				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10
+						- skeleton.get3DJointX(Skeleton.SHOULDER_LEFT) * 10 < 3)) {
 			return true;
 		}
 		return false;

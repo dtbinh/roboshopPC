@@ -58,7 +58,7 @@ public class MoveSegment {
 
 	public boolean rotateLeft() {
 		if ((skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < -2
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 0
 				&& (skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
 						.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10) > -3) {
 			return true;

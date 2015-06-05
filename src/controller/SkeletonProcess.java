@@ -246,27 +246,26 @@ public class SkeletonProcess {
 	public int getMoveCompleted() {
 		return ms.getMoveId();
 	}
-	
+
 	public int getArmCompleted() {
 		return as.getMoveId();
 	}
-	
-	public int getGripCompleted(){
+
+	public int getGripCompleted() {
 		return gs.getMoveId();
 	}
 
 	public int getToMovement() {
 		int movement = 0;
-		
-		
 
-		if ((right_shoulderZ - right_handZ) > 4) {
+		if ((right_shoulderZ - right_handZ > 2) && (left_shoulderZ - left_handZ > 2)) {
+			movement = getGripCompleted();
+		} else if ((right_shoulderZ - right_handZ) > 4) {
 			movement = getMoveCompleted();
-		} else if((left_shoulderZ - left_handZ) > 4){
+		} else if ((left_shoulderZ - left_handZ) > 4) {
 			movement = getArmCompleted();
 		}
 
 		return movement;
 	}
-
 }
