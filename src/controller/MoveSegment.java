@@ -28,9 +28,9 @@ public class MoveSegment {
 
 	public boolean moveForward() {
 		if ((skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 1
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 2
 				&& (skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 3) {
+						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 6) {
 			return true;
 		}
 		return false;
@@ -40,7 +40,7 @@ public class MoveSegment {
 		if ((skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
 				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < -1
 				&& (skeleton.get3DJointY(Skeleton.HAND_RIGHT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > -3) {
+						.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > -6) {
 			return true;
 		}
 		return false;
@@ -48,9 +48,9 @@ public class MoveSegment {
 
 	public boolean rotateRight() {
 		if ((skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 2
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) > 3
 				&& (skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
-						.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10) < 4) {
+						.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10) < 6) {
 			return true;
 		}
 		return false;
@@ -58,7 +58,7 @@ public class MoveSegment {
 
 	public boolean rotateLeft() {
 		if ((skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 1
+				.get3DJointY(Skeleton.SHOULDER_RIGHT) * 10) < 0
 				&& (skeleton.get3DJointX(Skeleton.HAND_RIGHT) * 10 - skeleton
 						.get3DJointX(Skeleton.SHOULDER_RIGHT) * 10) > -4) {
 			return true;

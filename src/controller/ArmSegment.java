@@ -28,9 +28,9 @@ public class ArmSegment {
 
 	public boolean armUp() {
 		if ((skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 1
+				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 2
 				&& (skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < 3) {
+						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < 4) {
 			return true;
 		}
 		return false;
@@ -40,7 +40,7 @@ public class ArmSegment {
 		if ((skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
 				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) < -1
 				&& (skeleton.get3DJointY(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -3) {
+						.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -4) {
 			return true;
 		}
 		return false;
@@ -48,7 +48,7 @@ public class ArmSegment {
 
 	public boolean armLeft() {
 		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -4
+				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -6
 				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
 						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < -2) {
 			return true;
@@ -60,7 +60,7 @@ public class ArmSegment {
 		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
 				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 0
 				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < 3) {
+						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < 4) {
 			return true;
 		}
 		return false;
