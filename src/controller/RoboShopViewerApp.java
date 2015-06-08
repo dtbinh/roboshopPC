@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -120,9 +121,12 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		
 		JPanel iconLayout = new JPanel(new FlowLayout());
 		JButton icon_nxt = new JButton();
+		JButton icon_home = new JButton();
 		icon_nxt.addActionListener(new reconnectListener());
+		icon_home.addActionListener(new returnListener());
 		JLabel icon_user = new JLabel();		
 		iconLayout.add(icon_nxt);
+		iconLayout.add(icon_home);
 		iconLayout.add(icon_user);
 		
 		JLabel elevation_label = new JLabel("Camera Elevation : ");
@@ -137,13 +141,16 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 		//-- END		
 		
 		//Assign image to icon		
-		ImageIcon nxt = createImageIcon("images/nxt_connect.png",
+		ImageIcon nxt = createImageIcon("images/icon_connect.png",
 				"Reconnect NXT");
+		ImageIcon home = createImageIcon("images/icon_return.png",
+				"Return");
 		ImageIcon icon = createImageIcon("images/icon_no_user.png",
 				"No User Detected!");
 		ImageIcon header = createImageIcon("images/icon-robot-shop.png",
 				"User Detected!");
 		icon_nxt.setIcon(nxt);
+		icon_home.setIcon(home);
 		icon_head.setIcon(header);
 		icon_user.setIcon(icon);
 		//-- END
@@ -249,6 +256,17 @@ public class RoboShopViewerApp extends DWApp implements ChangeListener {
 	class reconnectListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 			connect();// call main connect method to try to connect again
+		}
+	}
+	class returnListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt) {
+			try {
+				myKinect.dos.write(-99);
+				myKinect.dos.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		}
 	}
 

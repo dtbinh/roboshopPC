@@ -58,9 +58,9 @@ public class ArmSegment {
 
 	public boolean armRight() {
 		if ((skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > -1
+				.get3DJointY(Skeleton.SHOULDER_LEFT) * 10) > 0
 				&& (skeleton.get3DJointX(Skeleton.HAND_LEFT) * 10 - skeleton
-						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < 2) {
+						.get3DJointX(Skeleton.SHOULDER_LEFT) * 10) < 3) {
 			return true;
 		}
 		return false;
