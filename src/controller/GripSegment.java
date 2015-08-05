@@ -2,6 +2,18 @@ package controller;
 
 import edu.ufl.digitalworlds.j4k.Skeleton;
 
+/*
+Muhammad Naim bin Mohmad Shofi
+Universiti Putra Malaysia
+naim_shofi@yahoo.com
+
+This program is for Final Year Project for Bachelor of Computer Science and Information Technology.
+The title of this project is RoboShop : Shopping Robot Assistant Using Lego Mindstorm and Tetrix.
+It used J4K Library and LeJOS SDK.
+
+In this class, the Kinect will detect gesture to controlled the robot arm gripper.
+*/
+
 public class GripSegment {
 
 	Skeleton skeleton;

@@ -2,6 +2,18 @@ package controller;
 
 import edu.ufl.digitalworlds.j4k.Skeleton;
 
+/*
+ Muhammad Naim bin Mohmad Shofi
+ Universiti Putra Malaysia
+ naim_shofi@yahoo.com
+
+ This program is for Final Year Project for Bachelor of Computer Science and Information Technology.
+ The title of this project is RoboShop : Shopping Robot Assistant Using Lego Mindstorm and Tetrix.
+ It used J4K Library and LeJOS SDK.
+
+ In this class, the main gesture detection for the application.
+ */
+
 public class SkeletonProcess {
 	private Skeleton skeleton;
 	private float right_handX = 0;
@@ -256,7 +268,8 @@ public class SkeletonProcess {
 	public int getToMovement() {
 		int movement = 0;
 
-		if ((right_shoulderZ - right_handZ > 2) && (left_shoulderZ - left_handZ > 2)) {
+		if ((right_shoulderZ - right_handZ > 2)
+				&& (left_shoulderZ - left_handZ > 2)) {
 			movement = getGripCompleted();
 		} else if ((right_shoulderZ - right_handZ) > 4) {
 			movement = getMoveCompleted();

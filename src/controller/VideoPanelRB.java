@@ -8,38 +8,15 @@ import edu.ufl.digitalworlds.j4k.VideoFrame;
 import edu.ufl.digitalworlds.opengl.OpenGLPanel;
 
 /*
- * Copyright 2011-2014, Digital Worlds Institute, University of 
- * Florida, Angelos Barmpoutis.
- * All rights reserved.
- *
- * When this program is used for academic or research purposes, 
- * please cite the following article that introduced this Java library: 
- * 
- * A. Barmpoutis. "Tensor Body: Real-time Reconstruction of the Human Body 
- * and Avatar Synthesis from RGB-D', IEEE Transactions on Cybernetics, 
- * October 2013, Vol. 43(5), Pages: 1347-1356. 
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *     * Redistributions of source code must retain this copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce this
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ Muhammad Naim bin Mohmad Shofi
+ Universiti Putra Malaysia
+ naim_shofi@yahoo.com
+
+ This program is for Final Year Project for Bachelor of Computer Science and Information Technology.
+ The title of this project is RoboShop : Shopping Robot Assistant Using Lego Mindstorm and Tetrix.
+ It used J4K Library and LeJOS SDK.
+ 
+ In this class, the program will draw the video output and the skeleton to the canvas viewer.
  */
 @SuppressWarnings("serial")
 public class VideoPanelRB extends OpenGLPanel {
@@ -104,14 +81,15 @@ public class VideoPanelRB extends OpenGLPanel {
 		gl.glDisable(GL2.GL_LIGHTING);
 		gl.glLineWidth(2);
 		gl.glColor3f(1f, 0f, 0f);
-		for(int i=0 ; i < skeletons.length ; i++){
+		for (int i = 0; i < skeletons.length; i++) {
 			if (skeletons[i] != null) {
-				if (skeletons[i].getTimesDrawn() <= 10 && skeletons[i].isTracked()) {
+				if (skeletons[i].getTimesDrawn() <= 10
+						&& skeletons[i].isTracked()) {
 					skeletons[i].draw(gl);
 					skeletons[i].increaseTimesDrawn();
 				}
-			}			
-		}		
+			}
+		}
 
 		popMatrix();
 	}
