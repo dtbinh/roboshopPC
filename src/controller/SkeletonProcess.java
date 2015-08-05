@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.Vector;
-
 import edu.ufl.digitalworlds.j4k.Skeleton;
 
 public class SkeletonProcess {
